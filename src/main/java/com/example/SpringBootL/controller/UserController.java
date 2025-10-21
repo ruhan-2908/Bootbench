@@ -6,6 +6,7 @@ import com.example.SpringBootL.models.User;
 import com.example.SpringBootL.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,4 +23,10 @@ public class UserController {
     {
         return userRepository.findAll();
     }
+    @PostMapping
+    public User createUser()
+    {
+
+    }
 }
+
