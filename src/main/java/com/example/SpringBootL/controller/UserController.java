@@ -2,16 +2,13 @@ package com.example.SpringBootL.controller;
 
 
 import com.example.SpringBootL.entity.UserEntity;
-import com.example.SpringBootL.models.User;
+import com.example.SpringBootL.exceptions.ResouceNotFoundException;
 import com.example.SpringBootL.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,9 +21,17 @@ public class UserController {
         return userRepository.findAll();
     }
     @PostMapping
-    public User createUser()
+    public UserEntity createUser(@RequestBody UserEntity user)
     {
+        return userRepository.save(user);
+    }
 
+
+    @GetMapping("/{id}")
+    //optional returns the userentity if that's available or else it returns null
+    public UserEntity getUserById(@PathVariable Long id )
+    {
+        return userRepository.findById(id).orElseThrow(() -> new ResouceNotFoundException("User not found with this id"));
     }
 }
 
