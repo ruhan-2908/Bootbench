@@ -22,4 +22,19 @@ public class JwtUtil {
                 .compact()
                 ;
     }
+
+
+    public boolean validateToken(String token, UserDetails userDetails)
+    {
+        return extractUsername(token).equals(userDetails.getUsername());
+    }
+
+    public String extractUsername(String token) {
+        return Jwts.parser()
+                .verifyWith(SECRET_KEY)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
 }
