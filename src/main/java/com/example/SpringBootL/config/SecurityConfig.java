@@ -1,9 +1,11 @@
 package com.example.SpringBootL.config;
 
 
+import com.example.SpringBootL.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -32,17 +34,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailService(PasswordEncoder passwordEncoder)
+    public UserDetailsService userDetailService()
     {
-        UserDetails user = User.withUsername("alice")
-                .password(passwordEncoder.encode("user123"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.withUsername("zack")
-                 .password(passwordEncoder.encode("admin123"))
-                 .roles("ADMIN")
-                 .build();
-        return new InMemoryUserDetailsManager(user,admin);
+//        UserDetails user = User.withUsername("alice")
+//                .password(passwordEncoder.encode("user123"))
+//                .roles("USER")
+//                .build();
+//        UserDetails admin = User.withUsername("zack")
+//                 .password(passwordEncoder.encode("admin123"))
+//                 .roles("ADMIN")
+//                 .build();
+//        return new InMemoryUserDetailsManager(user,admin);
+
+        return  new CustomUserDetailsService();
+    }
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider()
+    {
+        DaoAuthenticationProvider authprovider = new DaoAuthenticationProvider();
+        authprovider.setUserDetailsService(userDetailService());
+        authprovider.setPasswordEncoder(passwordEncoder());
+        return authprovider;
     }
     @Bean
     public BCryptPasswordEncoder passwordEncoder()

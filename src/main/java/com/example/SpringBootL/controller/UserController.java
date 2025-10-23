@@ -7,6 +7,7 @@ import com.example.SpringBootL.models.User;
 import com.example.SpringBootL.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @GetMapping //get all
     public List<UserEntity> getUsers()
     {
@@ -31,6 +34,7 @@ public class UserController {
     @PostMapping // createuser
     public UserEntity createUser(@RequestBody UserEntity user)
     {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
     @PutMapping("/{id}") //update existing data of the user
