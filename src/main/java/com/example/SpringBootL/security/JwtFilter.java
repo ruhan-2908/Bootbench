@@ -3,6 +3,7 @@ package com.example.SpringBootL.security;
 
 import com.example.SpringBootL.services.CustomUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.BasicDeserializerFactory;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,7 +67,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-
+        BasicDeserializerFactory
         filterChain.doFilter(request,response);
     }
 }
